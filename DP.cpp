@@ -34,3 +34,25 @@ int editDistanceDP(const std::string& S1, const std::string& S2) {
     }
     return dp[L1][L2];
 }
+
+int main(){
+    string dir;
+    string a, b;
+    cin >> dir;
+    std::ifstream file;
+    file.open(dir);
+    if (!file.is_open()){
+        std::cout << "Error al abrir un archivo";
+        return 1;
+    }
+    while (getline(file, a)){
+        getline(file, b);
+        auto start = std::chrono::high_resolution_clock::now();
+        for (int i = 0;i < 1000;i++)
+            editDistanceDP(a, b);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        std::cout << "El tiempo de ejecución es: " << duration.count()/1000 << " ms" << std::endl;
+    }
+    return 0;
+}
