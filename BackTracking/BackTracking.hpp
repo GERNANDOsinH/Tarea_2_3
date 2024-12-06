@@ -1,4 +1,4 @@
-#include "TablasDeCostos.hpp"
+#include "../TablasDeCostos.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
