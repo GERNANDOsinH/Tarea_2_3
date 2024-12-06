@@ -5,16 +5,15 @@
 #include <vector>
 #include <chrono>
 
-int editDistanceDP(const std::string& S1, const std::string& S2) {
+int editDistanceDP(const std::string S1, const std::string S2) {
     int L1 = S1.length(), L2 = S2.length();
+    int a, b;
     std::vector<std::vector<int>> dp(L1 + 1, std::vector<int>(L2 + 1));
 
-    // Inicialización de la primera fila (costos de inserción)
     for (int j = 1; j <= L2; j++) {
         dp[0][j] = dp[0][j - 1] + costo_ins(S2[j - 1]);
     }
 
-    // Inicialización de la primera columna (costos de eliminación)
     for (int i = 1; i <= L1; i++) {
         dp[i][0] = dp[i - 1][0] + costo_del(S1[i - 1]);
     }
@@ -24,17 +23,19 @@ int editDistanceDP(const std::string& S1, const std::string& S2) {
             if (S1[i - 1] == S2[j - 1]) {
                 dp[i][j] = dp[i - 1][j - 1];
             } else {
+                a = std::min(
+                        dp[i - 1][j] + costo_del(S1[i - 1]),
+                        dp[i][j - 1] + costo_ins(S2[j - 1])
+                        );
+                b = std::min(
+                        a,
+                        dp[i - 1][j - 1] + costo_sub(S1[i - 1], S2[j - 1])
+                            );
                 dp[i][j] = std::min(
-                    std::min(
-                            std::min(
-                                dp[i - 1][j] + costo_del(S1[i - 1]),            // Eliminación
-                                dp[i][j - 1] + costo_ins(S2[j - 1])),           // Inserción
-                            dp[i - 1][j - 1] + costo_sub(S1[i - 1], S2[j - 1])       // Sustitución
-                            ),
-                        dp[i - 2][j - 2] + costo_trans(S1[i - 1], S1[i])            // Transposición
-);
-                
-                // Verificar transposición
+                        b,
+                        dp[i - 2][j - 2] + costo_trans(S1[i - 1], S1[i])
+                );
+        
                 if (i > 1 && j > 1 && S1[i - 1] == S2[j - 2] && S1[i - 2] == S2[j - 1]) {
                     dp[i][j] = std::min(dp[i][j], dp[i - 2][j - 2] + costo_trans(S1[i - 1], S1[i - 2]));
                 }
@@ -67,16 +68,11 @@ int main(){
         auto start = std::chrono::high_resolution_clock::now();
         for (int i = 0; i < 1000; i++)
             editDistanceDP(a, b);
-        std::cout << 2 << std::endl;
         auto end = std::chrono::high_resolution_clock::now();
-        std::cout << 3 << std::endl;
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        std::cout << 4 << std::endl;
         L = a.size() * b.size();
         d = duration.count() / 1000;
-        std::cout << 5 << std::endl;
         file_1 << L << " " << d << std::endl;
-        std::cout << 6 << std::endl;
     }
     file_0.close(); file_1.close();
     return 0;
