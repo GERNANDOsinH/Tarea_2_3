@@ -44,34 +44,5 @@ int editDistanceBruteForce(const std::string& S1, const std::string& S2, int i, 
         transposeCost = costo_trans(S1[i], S1[i + 1]) + editDistanceBruteForce(S1, S2, i + 2, j + 2);
     }
 
-    return std::min({insertCost, deleteCost, replaceCost, transposeCost});
-}
-
-int main(){
-    std::string title, a, b;
-    std::string dir_0, dir_1;
-    int L1, L2, d;
-    std::cin >> dir_0 >> dir_1 >> title;
-    std::ifstream file_0; std::ofstream file_1;
-    file_0.open(dir_0); file_1.open(dir_1, std::ios::app);
-
-    if (!file_0.is_open() || !file_1.is_open()){
-        std::cout << "Error al abrir un archivo";
-        return 1;
-    }
-
-    file_1 << title << std::endl;
-
-    while (std::getline(file_0, a)){
-        std::getline(file_0, b);
-        auto start = std::chrono::high_resolution_clock::now();
-        for (int i = 0;i < 1000;i++)
-            editDistanceBruteForce(a, b, 0, 0);
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        L1 = a.size(); L2 = b.size(); d = duration.count()/1000;
-        file_1 << L1 * L2 << " " << d << std::endl;
-    }
-    file_0.close(); file_1.close();
-    return 0;
+    return std::min(std::min(insertCost, deleteCost), std::min(replaceCost, transposeCost));
 }

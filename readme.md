@@ -5,4 +5,4 @@ Uso de los programas:
 4) Ingrese la dirección de las muestras de salida.
 
 Formato muestras:
-En cada archivo donde se encuentran las muestras deben haber pares de cadenas, donde la cadena i se comparara con la cadena i + 1, comenzando desde i = 0 y dando saltos de dos lineas.
+En cada archivo donde se encuentran las muestras deben lineas que contienen pares de muestras que seran comparadas con las dos funciones.
