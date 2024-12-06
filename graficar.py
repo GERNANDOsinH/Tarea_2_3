@@ -44,7 +44,7 @@ def graficar(L_pow_2, time, title):
     plt.title(title)
     plt.xlabel('Tamano str1.size() * str2.size()')
     plt.ylabel('Tiempo de ejecucion [ns]')
-    plt.savefig(title + ".png")
+    plt.savefig("figuras/" + title + ".png")
 
 dir = input("Ingrese la direccion de los resultados: ")
 
