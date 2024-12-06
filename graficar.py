@@ -42,8 +42,8 @@ def graficar(L_pow_2, time, title):
     plt.axvline(0, color='black', linewidth=0.5)
     plt.grid(color='gray', linestyle='--', linewidth=0.5)
     plt.title(title)
-    plt.xlabel('Eje X')
-    plt.ylabel('Eje Y')
+    plt.xlabel('Tamano str1.size() * str2.size()')
+    plt.ylabel('Tiempo de ejecucion [ns]')
     plt.show()
 
 dir = input("Ingrese la direccion de los resultados: ")

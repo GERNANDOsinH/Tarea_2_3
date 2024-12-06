@@ -37,7 +37,7 @@ int main() {
             editDistanceDP(a, b);
         
         auto end = chrono::high_resolution_clock::now();
-        auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+        auto duration = chrono::duration_cast<chrono::nanoseconds>(end - start);
 
         L = a.size() * b.size();
         d = duration.count() / 1000;
