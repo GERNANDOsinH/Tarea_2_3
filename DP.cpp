@@ -1,4 +1,9 @@
 #include "TablasDeCostos.hpp"
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
+#include <chrono>
 
 int editDistanceDP(const std::string& S1, const std::string& S2) {
     int L1 = S1.length(), L2 = S2.length();
@@ -19,11 +24,15 @@ int editDistanceDP(const std::string& S1, const std::string& S2) {
             if (S1[i - 1] == S2[j - 1]) {
                 dp[i][j] = dp[i - 1][j - 1];
             } else {
-                dp[i][j] = std::min({
-                    dp[i - 1][j] + costo_del(S1[i - 1]),             // Eliminación
-                    dp[i][j - 1] + costo_ins(S2[j - 1]),             // Inserción
-                    dp[i - 1][j - 1] + costo_sub(S1[i - 1], S2[j - 1]) // Sustitución
-                });
+                dp[i][j] = std::min(
+                    std::min(
+                            std::min(
+                                dp[i - 1][j] + costo_del(S1[i - 1]),            // Eliminación
+                                dp[i][j - 1] + costo_ins(S2[j - 1])),           // Inserción
+                            dp[i - 1][j - 1] + costo_sub(S1[i - 1], S2[j - 1])       // Sustitución
+                            ),
+                        dp[i - 2][j - 2] + costo_trans(S1[i - 1], S1[i])            // Transposición
+);
                 
                 // Verificar transposición
                 if (i > 1 && j > 1 && S1[i - 1] == S2[j - 2] && S1[i - 2] == S2[j - 1]) {
@@ -36,23 +45,39 @@ int editDistanceDP(const std::string& S1, const std::string& S2) {
 }
 
 int main(){
-    string dir;
-    string a, b;
-    cin >> dir;
-    std::ifstream file;
-    file.open(dir);
-    if (!file.is_open()){
-        std::cout << "Error al abrir un archivo";
+    std::string title, a, b;
+    std::string dir_0, dir_1;
+    int L, d;
+    std::cin >> dir_0 >> dir_1>> title;
+    std::ifstream file_0; std::ofstream file_1;
+    file_0.open(dir_0); file_1.open(dir_1, std::ios::out);
+
+    if (!file_0.is_open()) {
+        std::cout << "No se pudo abrir el archivo " << dir_0 << std::endl;
         return 1;
     }
-    while (getline(file, a)){
-        getline(file, b);
-        auto start = std::chrono::high_resolution_clock::now();
-        for (int i = 0;i < 1000;i++)
-            editDistanceDP(a, b);
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        std::cout << "El tiempo de ejecución es: " << duration.count()/1000 << " ms" << std::endl;
+    if (!file_1.is_open()) {
+        std::cout << "No se pudo abrir el archivo " << dir_1 << std::endl;
+        return 1;
     }
+
+    file_1 << title << std::endl;
+    while (std::getline(file_0, a)){
+        if (!std::getline(file_0, b)) break;
+        auto start = std::chrono::high_resolution_clock::now();
+        for (int i = 0; i < 1000; i++)
+            editDistanceDP(a, b);
+        std::cout << 2 << std::endl;
+        auto end = std::chrono::high_resolution_clock::now();
+        std::cout << 3 << std::endl;
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        std::cout << 4 << std::endl;
+        L = a.size() * b.size();
+        d = duration.count() / 1000;
+        std::cout << 5 << std::endl;
+        file_1 << L << " " << d << std::endl;
+        std::cout << 6 << std::endl;
+    }
+    file_0.close(); file_1.close();
     return 0;
 }

@@ -1,4 +1,8 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <map>
 
 std::map<char,std::map<char,int>> tabla_costo_sub;
 std::map<char,std::map<char,int>> tabla_costo_trans;
@@ -44,7 +48,7 @@ bool readReplace(){
         std::cout << "Error al abrir un archivo";
         return false;
         }
-    while (getline(file, line)){
+    while (std::getline(file, line)){
         fila = 'a' + contador;
         b = b && convertirStringAEnteros(line, tabla_costo_sub[fila]);
         contador++;

@@ -1,5 +1,9 @@
 #include "TablasDeCostos.hpp"
-
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
+#include <chrono>
 // Se asume que vamos a transformar S1 a S2.
 
 int editDistanceBruteForce(const std::string& S1, const std::string& S2, int i, int j){
@@ -44,23 +48,30 @@ int editDistanceBruteForce(const std::string& S1, const std::string& S2, int i, 
 }
 
 int main(){
-    string dir;
-    string a, b;
-    cin >> dir;
-    std::ifstream file;
-    file.open(dir);
-    if (!file.is_open()){
+    std::string title, a, b;
+    std::string dir_0, dir_1;
+    int L1, L2, d;
+    std::cin >> dir_0 >> dir_1 >> title;
+    std::ifstream file_0; std::ofstream file_1;
+    file_0.open(dir_0); file_1.open(dir_1, std::ios::app);
+
+    if (!file_0.is_open() || !file_1.is_open()){
         std::cout << "Error al abrir un archivo";
         return 1;
     }
-    while (getline(file, a)){
-        getline(file, b);
+
+    file_1 << title << std::endl;
+
+    while (std::getline(file_0, a)){
+        std::getline(file_0, b);
         auto start = std::chrono::high_resolution_clock::now();
         for (int i = 0;i < 1000;i++)
-            editDistanceBruteForce(a, b);
+            editDistanceBruteForce(a, b, 0, 0);
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        std::cout << "El tiempo de ejecución es: " << duration.count()/1000 << " ms" << std::endl;
+        L1 = a.size(); L2 = b.size(); d = duration.count()/1000;
+        file_1 << L1 * L2 << " " << d << std::endl;
     }
+    file_0.close(); file_1.close();
     return 0;
 }
