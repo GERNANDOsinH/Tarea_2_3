@@ -14,6 +14,9 @@ int main() {
     double d;
 
     cin >> dir_0 >> dir_1 >> title;
+
+    dir_0 = "muestras/" + dir_0;
+    dir_1 = "resultados/" + dir_1;
     
     ifstream file_i(dir_0);
 

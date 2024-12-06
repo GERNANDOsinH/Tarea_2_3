@@ -48,6 +48,8 @@ def graficar(L_pow_2, time, title):
 
 dir = input("Ingrese la direccion de los resultados: ")
 
+dir = "resultados/" + dir
+
 title, x, y = leer_archivo(dir)
 
 graficar(x, y, title)
